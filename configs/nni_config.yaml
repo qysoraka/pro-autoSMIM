@@ -5,4 +5,13 @@ trialCommand: CUDA_VISIBLE_DEVICES=0,1 python /data/wangzh/code/autoSMIM/run.py 
 trialConcurrency: 2
 maxTrialNumber: 300
 maxExperimentDuration: 5h
-trialG
+trialGpuNumber: 2
+tunerGpuIndices: 4,5
+tuner:
+   name: TPE
+   classArgs:
+      optimize_mode: minimize
+trainingService:
+   platform: local
+   useActiveGpu: False
+   maxTrialNumberPerGpu: 1
