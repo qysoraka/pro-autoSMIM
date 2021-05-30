@@ -13,4 +13,6 @@ def load_dataset(args, fold=0, train=True, aug_k=40, aug_n=1, patch=False):
     else:
         # testing mode
         test_dataset = m.load_dataset(
-           
+            args, fold, train, aug_k=aug_k, aug_n=aug_n
+        )
+        return test_dataset
