@@ -21,3 +21,19 @@ class ISIC16(Dataset):
         self.label_transform = label_transform
         assert len(x) == len(y)
         assert len(x) == len(names)
+        self.dataset_size = len(y)
+        self.x = x
+        self.y = y
+        self.names = names
+        self.train = train
+
+    def __len__(self):
+        if self.train:
+            return self.dataset_size * 2
+        else:
+            return self.dataset_size
+
+    def _get_index(self, idx):
+        if self.train:
+            return idx % self.dataset_size
+        else:
