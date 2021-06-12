@@ -49,4 +49,17 @@ class ISIC16(Dataset):
         _input = cv2.resize(_input, (1024, 1024), interpolation=cv2.INTER_CUBIC)
         # label
         _target = cv2.imread(self.y[idx])
-        _target =
+        _target = cv2.resize(_target, (1024, 1024), interpolation=cv2.INTER_NEAREST)
+        _target = _target[..., 0]
+
+        name = self.names[idx]
+        mask = np.ones_like(_target)
+
+        if self.train:
+            image, label = random_crop(_input, _target, roi=mask, size=[0.6, 1.0])
+        else:
+            image = _input.copy()
+            label = _target.copy()
+
+        im = Image.fromarray(np.uint8(image))
+        target = Image.fr
