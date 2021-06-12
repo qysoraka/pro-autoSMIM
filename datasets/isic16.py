@@ -37,3 +37,16 @@ class ISIC16(Dataset):
         if self.train:
             return idx % self.dataset_size
         else:
+            return idx
+
+    def __getitem__(self, idx):
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+        idx = self._get_index(idx)
+
+        # BGR -> RGB -> PIL
+        _input = cv2.imread(self.x[idx])[..., ::-1]
+        _input = cv2.resize(_input, (1024, 1024), interpolation=cv2.INTER_CUBIC)
+        # label
+        _target = cv2.imread(self.y[idx])
+        _target =
