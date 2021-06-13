@@ -62,4 +62,17 @@ class ISIC16(Dataset):
             label = _target.copy()
 
         im = Image.fromarray(np.uint8(image))
-        target = Image.fr
+        target = Image.fromarray(np.uint8(label)).convert("1")
+
+        # identical transformation for im and gt
+        seed = np.random.randint(2147483647)
+        torch.manual_seed(seed)
+        random.seed(seed)
+
+        if self.im_transform is not None:
+            im_t = self.im_transform(im)
+
+        torch.manual_seed(seed)
+        random.seed(seed)
+        if self.label_transform is not None:
+   
