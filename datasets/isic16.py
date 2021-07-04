@@ -125,4 +125,16 @@ def load_name():
         "/data/share/wangzh/datasets/ISIC2016/Test_Data/*.jpg"
     )
     test_targetlist = (
-        "/data/share/wangzh/datasets/ISIC2016/Test_GroundTruth/{}_Seg
+        "/data/share/wangzh/datasets/ISIC2016/Test_GroundTruth/{}_Segmentation.png"
+    )
+
+    test_input_pattern.sort()
+
+    for j in tqdm(range(len(test_input_pattern))):
+        test_inputpath = test_input_pattern[j]
+        test_name = analyze_name(test_inputpath)
+        test_targetpath = test_targetlist.format(str(test_name))
+
+        if os.path.exists(test_inputpath):
+            test_inputs.append(test_inputpath)
+            
