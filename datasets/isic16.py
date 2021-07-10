@@ -147,4 +147,12 @@ def load_name():
     assert len(test_inputs) == len(test_targets)
     assert len(test_targets) == len(test_names)
 
-    return inputs, targets, names, test_inputs, test_targets, test_nam
+    return inputs, targets, names, test_inputs, test_targets, test_names
+
+
+def load_dataset(args, fold, train=True, aug_k=40, aug_n=1, patch=False):
+    inputs, targets, names, test_inputs, test_targets, test_names = load_name()
+    normalize = transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+
+    kf = KFold(n_splits=5, shuffle=True, random_state=726)
+    for ifold, (train_index, val_index) in enumerate(kf.split(input
