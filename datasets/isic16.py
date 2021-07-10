@@ -137,4 +137,14 @@ def load_name():
 
         if os.path.exists(test_inputpath):
             test_inputs.append(test_inputpath)
-            
+            test_targets.append(test_targetpath)
+            test_names.append(test_name)
+
+    test_inputs = np.array(test_inputs)
+    test_targets = np.array(test_targets)
+    test_names = np.array(test_names)
+
+    assert len(test_inputs) == len(test_targets)
+    assert len(test_targets) == len(test_names)
+
+    return inputs, targets, names, test_inputs, test_targets, test_nam
