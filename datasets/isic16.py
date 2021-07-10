@@ -155,4 +155,15 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1, patch=False):
     normalize = transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
 
     kf = KFold(n_splits=5, shuffle=True, random_state=726)
-    for ifold, (train_index, val_index) in enumerate(kf.split(input
+    for ifold, (train_index, val_index) in enumerate(kf.split(inputs)):
+        if ifold != fold:
+            continue
+        X_train, X_val = inputs[train_index], inputs[val_index]
+        y_train, y_val = targets[train_index], targets[val_index]
+        names_train, names_val = names[train_index], names[val_index]
+    X_test = test_inputs
+    y_test = test_targets
+    names_test = test_names
+
+    # transform input images and construct datasets
+    size = a
