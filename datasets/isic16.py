@@ -180,4 +180,15 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1, patch=False):
     )
     label_transform = transforms.Compose(
         [
-    
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomVerticalFlip(),
+            transforms.Resize(size, interpolation=Image.NEAREST),
+            transforms.RandomRotation(15),
+            transforms.ToTensor(),
+        ]
+    )
+    test_transform = transforms.Compose(
+        [
+            transforms.Resize(size),
+            transforms.ToTensor(),
+            normali
