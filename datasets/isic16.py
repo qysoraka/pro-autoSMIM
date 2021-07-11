@@ -166,4 +166,18 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1, patch=False):
     names_test = test_names
 
     # transform input images and construct datasets
-    size = a
+    size = args.size
+    transform = transforms.Compose(
+        [
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomVerticalFlip(),
+            transforms.Resize(size),
+            transforms.RandomRotation(15),
+            transforms.ColorJitter(0.2, 0.2, 0.0, 0.0),
+            transforms.ToTensor(),
+            normalize,
+        ]
+    )
+    label_transform = transforms.Compose(
+        [
+    
