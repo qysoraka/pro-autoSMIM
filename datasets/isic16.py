@@ -227,4 +227,6 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1, patch=False):
     )
 
     if train:
-        return 
+        return train_dataset, val_dataset
+    else:
+        return test_dataset
