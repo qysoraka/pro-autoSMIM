@@ -29,4 +29,14 @@ class ISIC17(Dataset):
         return self.dataset_size
 
     def __getitem__(self, idx):
-        
+        # image
+        input = cv2.imread(self.x[idx])[..., ::-1]
+        input = cv2.resize(input, (512, 512), interpolation=cv2.INTER_CUBIC)
+        # label
+        target = cv2.imread(self.y[idx])
+        target = cv2.resize(target, (512, 512), interpolation=cv2.INTER_NEAREST)
+        target = target[..., 0]
+        # name
+        name = self.names[idx]
+
+        im = Image.fr
