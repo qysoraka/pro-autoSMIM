@@ -14,4 +14,19 @@ cv2.setNumThreads(1)
 
 
 class ISIC17(Dataset):
-    def __init__(self, x, y, names, im_transform, label_t
+    def __init__(self, x, y, names, im_transform, label_transform, train=False):
+        self.im_transform = im_transform
+        self.label_transform = label_transform
+        assert len(x) == len(y)
+        assert len(x) == len(names)
+        self.dataset_size = len(y)
+        self.x = x
+        self.y = y
+        self.names = names
+        self.train = train
+
+    def __len__(self):
+        return self.dataset_size
+
+    def __getitem__(self, idx):
+        
