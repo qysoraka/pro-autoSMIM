@@ -39,4 +39,17 @@ class ISIC17(Dataset):
         # name
         name = self.names[idx]
 
-        im = Image.fr
+        im = Image.fromarray(np.uint8(input))
+        target = Image.fromarray(np.uint8(target)).convert("1")
+
+        # identical transformation for im and gt
+        seed = np.random.randint(2147483647)
+        torch.manual_seed(seed)
+        random.seed(seed)
+
+        if self.im_transform is not None:
+            im_t = self.im_transform(im)
+
+        torch.manual_seed(seed)
+        random.seed(seed)
+        if
