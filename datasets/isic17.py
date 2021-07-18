@@ -52,4 +52,12 @@ class ISIC17(Dataset):
 
         torch.manual_seed(seed)
         random.seed(seed)
-        if
+        if self.label_transform is not None:
+            target_t = self.label_transform(target)
+            target_t = torch.squeeze(target_t).long()
+
+        # import imageio
+        # im_np = (im_t.permute(1, 2, 0).numpy() * 0.5 + 0.5) * 255
+        # target_np = (target_t.numpy()) * 255
+        # imageio.imwrite('./debug/im.png', np.array(im_np).astype(np.uint8))
+        # imageio.imwrite('./debug/gt.png', np.array(
