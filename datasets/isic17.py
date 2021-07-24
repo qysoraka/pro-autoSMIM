@@ -76,4 +76,18 @@ def load_name():
 
     # Need modification
     input_pattern = glob.glob(
-        "/data/share/wangzh/datasets/ISIC2017/Traini
+        "/data/share/wangzh/datasets/ISIC2017/Training_Data/*.jpg"
+    )
+    targetlist = (
+        "/data/share/wangzh/datasets/ISIC2017/Training_GroundTruth/{}_segmentation.png"
+    )
+
+    input_pattern.sort()
+
+    for i in tqdm(range(len(input_pattern))):
+        inputpath = input_pattern[i]
+        name = analyze_name(inputpath)
+        targetpath = targetlist.format(str(name))
+
+        if os.path.exists(inputpath):
+            inputs.a
