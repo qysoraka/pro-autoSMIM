@@ -60,4 +60,20 @@ class ISIC17(Dataset):
         # im_np = (im_t.permute(1, 2, 0).numpy() * 0.5 + 0.5) * 255
         # target_np = (target_t.numpy()) * 255
         # imageio.imwrite('./debug/im.png', np.array(im_np).astype(np.uint8))
-        # imageio.imwrite('./debug/gt.png', np.array(
+        # imageio.imwrite('./debug/gt.png', np.array(target_np).astype(np.uint8))
+
+        if self.train:
+            return im_t, target_t
+        else:
+            return im_t, target_t, name
+
+
+def load_name():
+
+    inputs, targets, names = [], [], []
+    val_inputs, val_targets, val_names = [], [], []
+    test_inputs, test_targets, test_names = [], [], []
+
+    # Need modification
+    input_pattern = glob.glob(
+        "/data/share/wangzh/datasets/ISIC2017/Traini
