@@ -90,4 +90,18 @@ def load_name():
         targetpath = targetlist.format(str(name))
 
         if os.path.exists(inputpath):
-            inputs.a
+            inputs.append(inputpath)
+            targets.append(targetpath)
+            names.append(name)
+
+    inputs = np.array(inputs)
+    targets = np.array(targets)
+    names = np.array(names)
+
+    # Need modification
+    val_input_pattern = glob.glob(
+        "/data/share/wangzh/datasets/ISIC2017/Validation_Data/*.jpg"
+    )
+    val_targetlist = "/data/share/wangzh/datasets/ISIC2017/Validation_GroundTruth/{}_segmentation.png"
+
+    val_inp
