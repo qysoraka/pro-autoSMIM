@@ -130,4 +130,14 @@ def load_name():
 
     test_input_pattern.sort()
 
-    for j in tqdm(r
+    for j in tqdm(range(len(test_input_pattern))):
+        test_inputpath = test_input_pattern[j]
+        test_name = analyze_name(test_inputpath)
+        test_targetpath = test_targetlist.format(str(test_name))
+
+        if os.path.exists(test_inputpath):
+            test_inputs.append(test_inputpath)
+            test_targets.append(test_targetpath)
+            test_names.append(test_name)
+
+    test_inpu
