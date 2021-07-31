@@ -116,4 +116,18 @@ def load_name():
             val_targets.append(val_targetpath)
             val_names.append(val_name)
 
-    val_inputs = n
+    val_inputs = np.array(val_inputs)
+    val_targets = np.array(val_targets)
+    val_names = np.array(val_names)
+
+    # Need modification
+    test_input_pattern = glob.glob(
+        "/data/share/wangzh/datasets/ISIC2017/Test_Data/*.jpg"
+    )
+    test_targetlist = (
+        "/data/share/wangzh/datasets/ISIC2017/Test_GroundTruth/{}_segmentation.png"
+    )
+
+    test_input_pattern.sort()
+
+    for j in tqdm(r
