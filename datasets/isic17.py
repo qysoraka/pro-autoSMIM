@@ -104,4 +104,16 @@ def load_name():
     )
     val_targetlist = "/data/share/wangzh/datasets/ISIC2017/Validation_GroundTruth/{}_segmentation.png"
 
-    val_inp
+    val_input_pattern.sort()
+
+    for j in tqdm(range(len(val_input_pattern))):
+        val_inputpath = val_input_pattern[j]
+        val_name = analyze_name(val_inputpath)
+        val_targetpath = val_targetlist.format(str(val_name))
+
+        if os.path.exists(val_inputpath):
+            val_inputs.append(val_inputpath)
+            val_targets.append(val_targetpath)
+            val_names.append(val_name)
+
+    val_inputs = n
