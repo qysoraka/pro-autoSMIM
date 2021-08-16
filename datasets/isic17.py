@@ -140,4 +140,24 @@ def load_name():
             test_targets.append(test_targetpath)
             test_names.append(test_name)
 
-    test_inpu
+    test_inputs = np.array(test_inputs)
+    test_targets = np.array(test_targets)
+    test_names = np.array(test_names)
+
+    assert len(test_inputs) == len(test_targets)
+    assert len(test_targets) == len(test_names)
+
+    return (
+        inputs,
+        targets,
+        names,
+        val_inputs,
+        val_targets,
+        val_names,
+        test_inputs,
+        test_targets,
+        test_names,
+    )
+
+
+def load_datas
