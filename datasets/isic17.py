@@ -160,4 +160,21 @@ def load_name():
     )
 
 
-def load_datas
+def load_dataset(args, fold, train=True, aug_k=40, aug_n=1):
+    (
+        inputs,
+        targets,
+        names,
+        val_inputs,
+        val_targets,
+        val_names,
+        test_inputs,
+        test_targets,
+        test_names,
+    ) = load_name()
+
+    index = int(args.percent * len(inputs) / 100)
+    if args.percent < 1:
+        inputs = inputs[447:index + 449]
+        targets = targets[447:index + 449]
+        n
