@@ -177,4 +177,17 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1):
     if args.percent < 1:
         inputs = inputs[447:index + 449]
         targets = targets[447:index + 449]
-        n
+        names = names[447:index + 449]
+    else:
+        inputs = inputs[:index]
+        targets = targets[:index]
+        names = names[:index]
+    print("Length of new inputs:", len(inputs))
+
+    normalize = transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+
+    X_trainset, X_test = inputs, test_inputs
+    y_trainset, y_test = targets, test_targets
+    train_names_set, names_test = names, test_names
+
+    X_train,
