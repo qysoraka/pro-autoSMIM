@@ -205,4 +205,21 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1):
         [
             transforms.Resize(size),
             transforms.ColorJitter(0.2, 0.2, 0.0, 0.0),
-   
+            transforms.ToTensor(),
+            normalize,
+        ]
+    )
+    label_transform = transforms.Compose(
+        [
+            transforms.Resize(size, interpolation=Image.NEAREST),
+            transforms.ToTensor(),
+        ]
+    )
+    test_transform = transforms.Compose(
+        [
+            transforms.Resize(size),
+            transforms.ToTensor(),
+            normalize,
+        ]
+    )
+ 
