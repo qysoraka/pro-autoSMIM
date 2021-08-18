@@ -190,4 +190,19 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1):
     y_trainset, y_test = targets, test_targets
     train_names_set, names_test = names, test_names
 
-    X_train,
+    X_train, X_val, y_train, y_val, names_train, names_val = (
+        X_trainset,
+        val_inputs,
+        y_trainset,
+        val_targets,
+        train_names_set,
+        val_names,
+    )
+
+    # transform input images and construct datasets
+    size = args.size
+    transform = transforms.Compose(
+        [
+            transforms.Resize(size),
+            transforms.ColorJitter(0.2, 0.2, 0.0, 0.0),
+   
