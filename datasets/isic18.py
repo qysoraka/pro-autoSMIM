@@ -1,19 +1,22 @@
+
+import random
 import glob
 import os
-import random
+import torch
 import cv2
 import numpy as np
-import torch
-from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
+from PIL import Image
 from tqdm import tqdm
-from datasets.data_utils import analyze_name
+from datasets.data_utils import analyze_name, random_crop
+from sklearn.model_selection import KFold
+
 
 cv2.setNumThreads(1)
 
 
-class ISIC17(Dataset):
+class ISIC18(Dataset):
     def __init__(self, x, y, names, im_transform, label_transform, train=False):
         self.im_transform = im_transform
         self.label_transform = label_transform
@@ -26,21 +29,41 @@ class ISIC17(Dataset):
         self.train = train
 
     def __len__(self):
-        return self.dataset_size
+        if self.train:
+            return self.dataset_size * 2
+        else:
+            return self.dataset_size
+
+    def _get_index(self, idx):
+        if self.train:
+            return idx % self.dataset_size
+        else:
+            return idx
 
     def __getitem__(self, idx):
-        # image
-        input = cv2.imread(self.x[idx])[..., ::-1]
-        input = cv2.resize(input, (512, 512), interpolation=cv2.INTER_CUBIC)
-        # label
-        target = cv2.imread(self.y[idx])
-        target = cv2.resize(target, (512, 512), interpolation=cv2.INTER_NEAREST)
-        target = target[..., 0]
-        # name
-        name = self.names[idx]
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+        idx = self._get_index(idx)
 
-        im = Image.fromarray(np.uint8(input))
-        target = Image.fromarray(np.uint8(target)).convert("1")
+        # BGR -> RGB -> PIL
+        _input = cv2.imread(self.x[idx])[..., ::-1]
+        _input = cv2.resize(_input, (1024, 1024), interpolation=cv2.INTER_CUBIC)
+        # label
+        _target = cv2.imread(self.y[idx])
+        _target = cv2.resize(_target, (1024, 1024), interpolation=cv2.INTER_NEAREST)
+        _target = _target[..., 0]
+
+        name = self.names[idx]
+        mask = np.ones_like(_target)
+
+        if self.train:
+            image, label = random_crop(_input, _target, roi=mask, size=[0.6, 1.0])
+        else:
+            image = _input.copy()
+            label = _target.copy()
+
+        im = Image.fromarray(np.uint8(image))
+        target = Image.fromarray(np.uint8(label)).convert("1")
 
         # identical transformation for im and gt
         seed = np.random.randint(2147483647)
@@ -71,15 +94,13 @@ class ISIC17(Dataset):
 def load_name():
 
     inputs, targets, names = [], [], []
-    val_inputs, val_targets, val_names = [], [], []
-    test_inputs, test_targets, test_names = [], [], []
 
     # Need modification
     input_pattern = glob.glob(
-        "/data/share/wangzh/datasets/ISIC2017/Training_Data/*.jpg"
+        "/data/share/wangzh/datasets/ISIC2018/Training_Data/*.jpg"
     )
     targetlist = (
-        "/data/share/wangzh/datasets/ISIC2017/Training_GroundTruth/{}_segmentation.png"
+        "/data/share/wangzh/datasets/ISIC2018/Training_GroundTruth/{}_segmentation.png"
     )
 
     input_pattern.sort()
@@ -98,112 +119,42 @@ def load_name():
     targets = np.array(targets)
     names = np.array(names)
 
-    # Need modification
-    val_input_pattern = glob.glob(
-        "/data/share/wangzh/datasets/ISIC2017/Validation_Data/*.jpg"
-    )
-    val_targetlist = "/data/share/wangzh/datasets/ISIC2017/Validation_GroundTruth/{}_segmentation.png"
-
-    val_input_pattern.sort()
-
-    for j in tqdm(range(len(val_input_pattern))):
-        val_inputpath = val_input_pattern[j]
-        val_name = analyze_name(val_inputpath)
-        val_targetpath = val_targetlist.format(str(val_name))
-
-        if os.path.exists(val_inputpath):
-            val_inputs.append(val_inputpath)
-            val_targets.append(val_targetpath)
-            val_names.append(val_name)
-
-    val_inputs = np.array(val_inputs)
-    val_targets = np.array(val_targets)
-    val_names = np.array(val_names)
-
-    # Need modification
-    test_input_pattern = glob.glob(
-        "/data/share/wangzh/datasets/ISIC2017/Test_Data/*.jpg"
-    )
-    test_targetlist = (
-        "/data/share/wangzh/datasets/ISIC2017/Test_GroundTruth/{}_segmentation.png"
-    )
-
-    test_input_pattern.sort()
-
-    for j in tqdm(range(len(test_input_pattern))):
-        test_inputpath = test_input_pattern[j]
-        test_name = analyze_name(test_inputpath)
-        test_targetpath = test_targetlist.format(str(test_name))
-
-        if os.path.exists(test_inputpath):
-            test_inputs.append(test_inputpath)
-            test_targets.append(test_targetpath)
-            test_names.append(test_name)
-
-    test_inputs = np.array(test_inputs)
-    test_targets = np.array(test_targets)
-    test_names = np.array(test_names)
-
-    assert len(test_inputs) == len(test_targets)
-    assert len(test_targets) == len(test_names)
-
-    return (
-        inputs,
-        targets,
-        names,
-        val_inputs,
-        val_targets,
-        val_names,
-        test_inputs,
-        test_targets,
-        test_names,
-    )
+    return inputs, targets, names
 
 
-def load_dataset(args, fold, train=True, aug_k=40, aug_n=1):
+def load_dataset(args, fold, train=True, aug_k=40, aug_n=1, patch=False):
     (
         inputs,
         targets,
         names,
-        val_inputs,
-        val_targets,
-        val_names,
-        test_inputs,
-        test_targets,
-        test_names,
     ) = load_name()
-
-    index = int(args.percent * len(inputs) / 100)
-    if args.percent < 1:
-        inputs = inputs[447:index + 449]
-        targets = targets[447:index + 449]
-        names = names[447:index + 449]
-    else:
-        inputs = inputs[:index]
-        targets = targets[:index]
-        names = names[:index]
-    print("Length of new inputs:", len(inputs))
 
     normalize = transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
 
-    X_trainset, X_test = inputs, test_inputs
-    y_trainset, y_test = targets, test_targets
-    train_names_set, names_test = names, test_names
+    kf = KFold(n_splits=5, shuffle=True, random_state=444)
+    for ifold, (train_index, test_index) in enumerate(kf.split(inputs)):
+        if ifold != fold:
+            continue
+        X_trainset, X_test = inputs[train_index], inputs[test_index]
+        y_trainset, y_test = targets[train_index], targets[test_index]
+        names_trainset, names_test = names[train_index], names[test_index]
 
+    index_s = int(len(X_trainset) * 0.875)
     X_train, X_val, y_train, y_val, names_train, names_val = (
-        X_trainset,
-        val_inputs,
-        y_trainset,
-        val_targets,
-        train_names_set,
-        val_names,
+        X_trainset[:index_s], X_trainset[index_s:],
+        y_trainset[:index_s], y_trainset[index_s:],
+        names_trainset[:index_s], names_trainset[index_s:],
     )
+    print('Length of inputs: {}, {}, {}'.format(len(X_train), len(X_val), len(X_test)))
 
     # transform input images and construct datasets
     size = args.size
     transform = transforms.Compose(
         [
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomVerticalFlip(),
             transforms.Resize(size),
+            transforms.RandomRotation(15),
             transforms.ColorJitter(0.2, 0.2, 0.0, 0.0),
             transforms.ToTensor(),
             normalize,
@@ -211,7 +162,10 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1):
     )
     label_transform = transforms.Compose(
         [
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomVerticalFlip(),
             transforms.Resize(size, interpolation=Image.NEAREST),
+            transforms.RandomRotation(15),
             transforms.ToTensor(),
         ]
     )
@@ -229,7 +183,7 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1):
         ]
     )
 
-    train_dataset = ISIC17(
+    train_dataset = ISIC18(
         X_train,
         y_train,
         names_train,
@@ -237,7 +191,7 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1):
         label_transform=label_transform,
         train=True,
     )
-    val_dataset = ISIC17(
+    val_dataset = ISIC18(
         X_val,
         y_val,
         names_val,
@@ -245,7 +199,7 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1):
         label_transform=test_label_transform,
         train=False,
     )
-    test_dataset = ISIC17(
+    test_dataset = ISIC18(
         X_test,
         y_test,
         names_test,
