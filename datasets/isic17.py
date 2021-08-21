@@ -222,4 +222,19 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1):
             normalize,
         ]
     )
- 
+    test_label_transform = transforms.Compose(
+        [
+            transforms.Resize(size, interpolation=Image.NEAREST),
+            transforms.ToTensor(),
+        ]
+    )
+
+    train_dataset = ISIC17(
+        X_train,
+        y_train,
+        names_train,
+        im_transform=transform,
+        label_transform=label_transform,
+        train=True,
+    )
+    val_d
