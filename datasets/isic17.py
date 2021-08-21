@@ -237,4 +237,22 @@ def load_dataset(args, fold, train=True, aug_k=40, aug_n=1):
         label_transform=label_transform,
         train=True,
     )
-    val_d
+    val_dataset = ISIC17(
+        X_val,
+        y_val,
+        names_val,
+        im_transform=test_transform,
+        label_transform=test_label_transform,
+        train=False,
+    )
+    test_dataset = ISIC17(
+        X_test,
+        y_test,
+        names_test,
+        im_transform=test_transform,
+        label_transform=test_label_transform,
+        train=False,
+    )
+
+    if train:
+        return train_dataset, 
