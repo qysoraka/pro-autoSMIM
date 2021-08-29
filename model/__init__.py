@@ -17,4 +17,14 @@ from utils.train_utils import jigsaw, make_optimizer, rotate_images
 
 
 class Base_Module(LightningModule):
-    de
+    def __init__(self, args):
+        super(Base_Module, self).__init__()
+
+        self.args = args
+
+    def init_weights(self, pretrained):
+        if os.path.isfile(pretrained):
+            print("=> loading pretrained model {}".format(pretrained))
+            pretrained_dict = torch.load(pretrained, map_location='cpu')
+            pretrained_dict = pretrained_dict["state_dict"]
+            model_dic
