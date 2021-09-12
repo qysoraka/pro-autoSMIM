@@ -27,4 +27,13 @@ class Base_Module(LightningModule):
             print("=> loading pretrained model {}".format(pretrained))
             pretrained_dict = torch.load(pretrained, map_location='cpu')
             pretrained_dict = pretrained_dict["state_dict"]
-            model_dic
+            model_dict = self.state_dict()
+            available_pretrained_dict = {}
+
+            for k, v in pretrained_dict.items():
+                # print('Pretrained dict: ', k)
+                if k in model_dict.keys():
+                    if pretrained_dict[k].shape == model_dict[k].shape:
+                        available_pretrained_dict[k] = v
+                if k[7:] in model_dict.keys():
+                    
