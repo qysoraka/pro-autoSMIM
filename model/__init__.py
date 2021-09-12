@@ -36,4 +36,14 @@ class Base_Module(LightningModule):
                     if pretrained_dict[k].shape == model_dict[k].shape:
                         available_pretrained_dict[k] = v
                 if k[7:] in model_dict.keys():
-                    
+                    if pretrained_dict[k].shape == model_dict[k[7:]].shape:
+                        available_pretrained_dict[k[7:]] = v
+
+            for k, _ in available_pretrained_dict.items():
+                print("loading {}".format(k))
+            model_dict.update(available_pretrained_dict)
+            self.load_state_dict(model_dict, strict=True)
+
+    def load_weights(self, path):
+        if os.path.isfile(path):
+            print("=
