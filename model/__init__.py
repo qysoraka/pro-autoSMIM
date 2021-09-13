@@ -46,4 +46,13 @@ class Base_Module(LightningModule):
 
     def load_weights(self, path):
         if os.path.isfile(path):
-            print("=
+            print("=> Loading model from {}".format(path))
+            checkpoint = torch.load(path, map_location='cpu')
+            state_dict = checkpoint["state_dict"]
+            new_state_dict = OrderedDict()
+            for k, v in state_dict.items():
+                if "module." in k:
+                    name = k[7:]  # remove `module.`
+                else:
+                    name = k
+                new_state_dict[name]
