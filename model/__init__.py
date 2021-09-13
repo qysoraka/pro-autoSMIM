@@ -55,4 +55,15 @@ class Base_Module(LightningModule):
                     name = k[7:]  # remove `module.`
                 else:
                     name = k
-                new_state_dict[name]
+                new_state_dict[name] = v
+            self.load_state_dict(new_state_dict)
+            print("=> trained model loaded")
+
+    def initialize(self, decoder, pred):
+        if decoder is not None:
+            for m in decoder.modules():
+
+                if isinstance(m, nn.Conv2d):
+                    nn.init.kaiming_uniform_(
+                        m.weight, mode="fan_in", nonlinearity="relu"
+                    
