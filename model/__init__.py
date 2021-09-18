@@ -77,4 +77,14 @@ class Base_Module(LightningModule):
                 elif isinstance(m, nn.Linear):
                     nn.init.xavier_uniform_(m.weight)
                     if m.bias is not None:
-                        nn.init.constant_(
+                        nn.init.constant_(m.bias, 0)
+
+        for m in pred.modules():
+            if isinstance(m, (nn.Linear, nn.Conv2d)):
+                nn.init.xavier_uniform_(m.weight)
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+
+    def configure_optimizers(self):
+        optim, kwargs_optimizer = make_optimizer(args=self.args)
+        opt = optim(self.parameters(),
