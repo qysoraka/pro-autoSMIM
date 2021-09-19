@@ -87,4 +87,19 @@ class Base_Module(LightningModule):
 
     def configure_optimizers(self):
         optim, kwargs_optimizer = make_optimizer(args=self.args)
-        opt = optim(self.parameters(),
+        opt = optim(self.parameters(), **kwargs_optimizer)
+        scheduler = CosineAnnealingLR(opt, T_max=self.args.epoch)
+
+        return [opt], [scheduler]
+
+
+class Model(Base_Module):
+    def __init__(self, args, criteria):
+        super(Model, self).__init__(args=args)
+
+        self.criteria = criteria
+
+    def forward(self, x):
+        x0 = self.encoder(x)
+        x1 = self.decoder(*x0)
+        y = s
