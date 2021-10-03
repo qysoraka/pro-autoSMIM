@@ -102,4 +102,16 @@ class Model(Base_Module):
     def forward(self, x):
         x0 = self.encoder(x)
         x1 = self.decoder(*x0)
-        y = s
+        y = self.pred_seg(x1)
+
+        return y
+
+    def training_step(self, batch, batch_idx):
+        input, target = batch
+        output = self(input)
+        if not self.args.dice_loss:
+            loss = self.criteria[0](output, target)
+        else:
+            loss = self.criteria[0](output, target) + 1.5 * self.criteria[1](output, target)
+        self.log(
+            "Train Loss", loss
