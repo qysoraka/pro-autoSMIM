@@ -114,4 +114,14 @@ class Model(Base_Module):
         else:
             loss = self.criteria[0](output, target) + 1.5 * self.criteria[1](output, target)
         self.log(
-            "Train Loss", loss
+            "Train Loss", loss, on_step=False, on_epoch=True, prog_bar=True, logger=True, sync_dist=True
+        )
+        return loss
+
+    # def on_train_batch_end(self, outputs, batch, batch_idx, unused=None):
+    #     for name, param in self.named_parameters():
+    #         if param.grad is None:
+    #             print(name)
+
+    def validation_step(self, batch, batch_idx):
+        input, target, name = batch
