@@ -125,3 +125,13 @@ class Model(Base_Module):
 
     def validation_step(self, batch, batch_idx):
         input, target, name = batch
+
+        output = self(input)
+        if not self.args.dice_loss:
+            loss = self.criteria[0](output, target)
+        else:
+            loss = self.criteria[0](output, target) + 1.5 * self.criteria[1](output, target)
+        dsc = 0
+        for j in range(output.size(0)):
+            output_temp = torch.argmax(output[j], dim=0).cpu().numpy()
+            target_tem
