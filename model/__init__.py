@@ -134,4 +134,18 @@ class Model(Base_Module):
         dsc = 0
         for j in range(output.size(0)):
             output_temp = torch.argmax(output[j], dim=0).cpu().numpy()
-            target_tem
+            target_temp = target[j].cpu().numpy()
+            dsc += dc(output_temp, target_temp)
+
+        self.log(
+            "Validation Loss",
+            loss,
+            on_epoch=True,
+            sync_dist=True,
+            on_step=False,
+            prog_bar=True,
+        )
+        self.log(
+            "Validation Dice",
+            dsc / output.size(0),
+       
