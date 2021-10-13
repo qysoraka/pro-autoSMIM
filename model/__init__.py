@@ -148,4 +148,21 @@ class Model(Base_Module):
         self.log(
             "Validation Dice",
             dsc / output.size(0),
-       
+            on_epoch=True,
+            sync_dist=True,
+            on_step=False,
+            prog_bar=True,
+        )
+
+        return dsc
+
+    def on_test_start(self):
+        self.names = []
+        self.dscs = []
+        self.jacs = []
+        self.accs = []
+        self.sens = []
+        self.HDs = []
+
+    def test_step(self, batch, batch_idx):
+        dirname = "{}/results_{}".format(self.args.save_name, self.args.
