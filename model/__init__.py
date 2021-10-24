@@ -179,4 +179,12 @@ class Model(Base_Module):
         for idx, name in enumerate(names_subset):
             output_np = torch.argmax(output[idx], dim=0).cpu().numpy()
             binary_output = np.array(output_np)
-          
+            target_np = targets_subset[idx].cpu().numpy().astype(np.uint8)
+            if self.args.save_results:
+                filename = os.path.join(dirname, str(name) + ".png")
+                imageio.imwrite(filename, (binary_output * 255).astype(np.uint8))
+
+            target_1d = np.reshape(target_np, (-1, 1))
+            pred_1d = np.reshape(binary_output, (-1, 1))
+
+            accuracy = accuracy_score(tar
