@@ -165,4 +165,18 @@ class Model(Base_Module):
         self.HDs = []
 
     def test_step(self, batch, batch_idx):
-        dirname = "{}/results_{}".format(self.args.save_name, self.args.
+        dirname = "{}/results_{}".format(self.args.save_name, self.args.dataset_name)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+
+        dsc_sum = 0
+        jac_sum = 0
+        acc_sum = 0
+
+        images, targets_subset, names_subset = batch
+        output = self(images)
+
+        for idx, name in enumerate(names_subset):
+            output_np = torch.argmax(output[idx], dim=0).cpu().numpy()
+            binary_output = np.array(output_np)
+          
