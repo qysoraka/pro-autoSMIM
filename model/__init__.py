@@ -199,4 +199,14 @@ class Model(Base_Module):
             acc_sum += accuracy
             self.accs.append(accuracy)
 
-            self.log("Test Dice", dsc, on_s
+            self.log("Test Dice", dsc, on_step=False, on_epoch=True, sync_dist=True)
+            self.log("Test Jac", jac, on_step=False, on_epoch=True, sync_dist=True)
+            self.log("Test Acc", accuracy, on_step=False, on_epoch=True, sync_dist=True)
+
+    def on_test_end(self):
+        dataframe = pd.DataFrame(
+            {
+                "name": self.names,
+                "dice": self.dscs,
+                "jac": self.jacs,
+                "acc": self.ac
