@@ -187,4 +187,16 @@ class Model(Base_Module):
             target_1d = np.reshape(target_np, (-1, 1))
             pred_1d = np.reshape(binary_output, (-1, 1))
 
-            accuracy = accuracy_score(tar
+            accuracy = accuracy_score(target_1d, pred_1d)
+            dsc = dc(target_1d, pred_1d)
+            jac = jc(target_1d, pred_1d)
+
+            self.names.append(name)
+            dsc_sum += dsc
+            self.dscs.append(dsc)
+            jac_sum += jac
+            self.jacs.append(jac)
+            acc_sum += accuracy
+            self.accs.append(accuracy)
+
+            self.log("Test Dice", dsc, on_s
