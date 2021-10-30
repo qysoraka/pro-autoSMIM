@@ -219,4 +219,14 @@ class Model(Base_Module):
             "Jac": np.average(self.jacs),
             "ACC": np.average(self.accs),
         }
-        results_jso
+        results_json = json.dumps(results, indent=4)
+        with open(os.path.join(self.args.save_name, 'results_{}_{}.json'.format(self.args.dataset_name, self.args.fold)), 'w') as f:
+            f.write(results_json)
+        print('=> Json result saved')
+
+
+class Context_Model(Base_Module):
+    def __init__(self, args, criteria, inpainting=True):
+        super(Context_Model, self).__init__(args=args)
+
+   
