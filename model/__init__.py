@@ -209,4 +209,14 @@ class Model(Base_Module):
                 "name": self.names,
                 "dice": self.dscs,
                 "jac": self.jacs,
-                "acc": self.ac
+                "acc": self.accs,
+            }
+        )
+        self.args.save_name = os.path.join(self.args.save_name, str(self.args.seed))
+        dataframe.to_excel(os.path.join(self.args.save_name, "count_results_{}_{}.xlsx".format(self.args.dataset_name, self.args.fold)))
+        results = {
+            "Dsc": np.average(self.dscs),
+            "Jac": np.average(self.jacs),
+            "ACC": np.average(self.accs),
+        }
+        results_jso
