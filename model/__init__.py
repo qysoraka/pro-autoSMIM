@@ -242,4 +242,19 @@ class Context_Model(Base_Module):
         # mask
         y = y * 0.5 + 0.5
         y *= mask
-        y = (y 
+        y = (y - 0.5) / 0.5
+
+        return y
+
+    def training_step(self, batch, batch_idx):
+        if self.inpainting:
+            input, _, target = batch
+        else:
+            _, input, target = batch
+        output = self(input)
+        loss = self.criteria(output, target)
+        loss = loss * 100
+        if self.inpainting:
+            self.log(
+                "Inpainting Train Loss",
+                loss,
