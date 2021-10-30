@@ -229,4 +229,17 @@ class Context_Model(Base_Module):
     def __init__(self, args, criteria, inpainting=True):
         super(Context_Model, self).__init__(args=args)
 
-   
+        self.criteria = criteria[0]
+        self.inpainting = inpainting
+
+    def forward(self, x):
+        input = x[:, :-1]
+        mask = x[:, -1:]
+        x0 = self.encoder(input)
+        x1 = self.decoder(*x0)
+        logits = self.pred(x1)
+        y = torch.clamp(logits, -1.0, 1.0)
+        # mask
+        y = y * 0.5 + 0.5
+        y *= mask
+        y = (y 
