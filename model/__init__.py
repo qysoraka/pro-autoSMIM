@@ -258,3 +258,21 @@ class Context_Model(Base_Module):
             self.log(
                 "Inpainting Train Loss",
                 loss,
+                on_step=False,
+                on_epoch=True,
+                prog_bar=True,
+                logger=True,
+            )
+        else:
+            self.log(
+                "Colorization Train Loss",
+                loss,
+                on_step=False,
+                on_epoch=True,
+                prog_bar=True,
+                logger=True,
+            )
+
+        return loss
+
+    def validation_ste
