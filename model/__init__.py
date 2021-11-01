@@ -275,4 +275,17 @@ class Context_Model(Base_Module):
 
         return loss
 
-    def validation_ste
+    def validation_step(self, batch, batch_idx):
+        if self.inpainting:
+            input, _, target, _ = batch
+        else:
+            _, input, target, _ = batch
+        output = self(input)
+        loss = self.criteria(output, target)
+        loss = loss * 100
+        if self.inpainting:
+            self.log(
+                "Inpainting Validation Loss",
+                loss,
+                on_epoch=True,
+                sync_dist=True,
