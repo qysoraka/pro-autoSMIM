@@ -289,3 +289,20 @@ class Context_Model(Base_Module):
                 loss,
                 on_epoch=True,
                 sync_dist=True,
+                on_step=False,
+                prog_bar=True,
+            )
+        else:
+            self.log(
+                "Colorization Validation Loss",
+                loss,
+                on_epoch=True,
+                sync_dist=True,
+                on_step=False,
+                prog_bar=True,
+            )
+
+        return loss
+
+    def on_test_start(self):
+        self.test_loss = 
