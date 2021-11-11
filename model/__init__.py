@@ -305,4 +305,16 @@ class Context_Model(Base_Module):
         return loss
 
     def on_test_start(self):
-        self.test_loss = 
+        self.test_loss = []
+
+    def test_step(self, batch, batch_idx):
+        images, images_gray, target, names_subset = batch
+
+        if self.inpainting:
+            dirname = "{}/results_inpainting".format(self.args.save_name)
+            output = self(images)
+        else:
+            dirname = "{}/results_colorization".format(self.args.save_name)
+            output = self(images_gray)
+        if not os.path.exists(dirname):
+            os.makedir
