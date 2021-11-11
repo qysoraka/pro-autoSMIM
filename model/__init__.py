@@ -317,4 +317,14 @@ class Context_Model(Base_Module):
             dirname = "{}/results_colorization".format(self.args.save_name)
             output = self(images_gray)
         if not os.path.exists(dirname):
-            os.makedir
+            os.makedirs(dirname)
+
+        loss = self.criteria(output, target)
+
+        if self.args.save_results:
+            for idx, name in enumerate(names_subset):
+                image_np = images.cpu()[idx][:3].permute(1, 2, 0).numpy()
+                image_rgb = np.array(image_np) * 0.5 + 0.5
+                output_np = output.cpu()[idx].permute(1, 2, 0).numpy()
+                output_rgb = np.array(output_np) * 0.5 + 0.5
+                fil
