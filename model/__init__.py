@@ -327,4 +327,14 @@ class Context_Model(Base_Module):
                 image_rgb = np.array(image_np) * 0.5 + 0.5
                 output_np = output.cpu()[idx].permute(1, 2, 0).numpy()
                 output_rgb = np.array(output_np) * 0.5 + 0.5
-                fil
+                filename = os.path.join(dirname, str(name) + ".png")
+                imageio.imwrite(
+                    filename, ((image_rgb + output_rgb) * 255).astype(np.uint8)
+                )
+
+        self.test_loss.append(loss.cpu().numpy())
+        self.log("Test Loss", loss)
+
+    def on_test_epoch_end(self):
+        norm = np.linalg.norm(self.test_loss)
+        norm_loss = np.
