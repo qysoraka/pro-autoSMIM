@@ -337,4 +337,17 @@ class Context_Model(Base_Module):
 
     def on_test_epoch_end(self):
         norm = np.linalg.norm(self.test_loss)
-        norm_loss = np.
+        norm_loss = np.mean(self.test_loss / norm)
+        self.log("Test Norm Loss", norm_loss)
+
+
+class Rotation_Model(Base_Module):
+    def __init__(self, args, criteria):
+        super(Rotation_Model, self).__init__(args=args)
+
+        self.criteria = criteria[1]
+
+    def forward(self, x):
+        # index = int(x.shape[0] / 4)
+        x0 = self.encoder(x)
+        y = self
