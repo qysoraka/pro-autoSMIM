@@ -350,4 +350,20 @@ class Rotation_Model(Base_Module):
     def forward(self, x):
         # index = int(x.shape[0] / 4)
         x0 = self.encoder(x)
-        y = self
+        y = self.pred(x0[-1])
+
+        return y
+
+    def training_step(self, batch, batch_idx):
+        input, _, _ = batch
+        input = input[:, :-1, :, :]
+        rot_input, rot_target = rotate_images(input)
+        output = self(rot_input)
+
+        loss = self.criteria(output, rot_target)
+        self.log(
+            "Rotation Train Loss",
+            loss,
+            on_step=False,
+            on_epoch=True,
+            pr
