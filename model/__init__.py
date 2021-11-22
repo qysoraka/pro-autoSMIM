@@ -366,4 +366,18 @@ class Rotation_Model(Base_Module):
             loss,
             on_step=False,
             on_epoch=True,
-            pr
+            prog_bar=True,
+            logger=True,
+        )
+
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        input, _, _, _ = batch
+        input = input[:, :-1, :, :]
+        rot_input, rot_target = rotate_images(input)
+        output = self(rot_input)
+
+        loss = self.criteria(output, rot_target)
+        acc = accuracy_score(
+            torch.argmax(output, 
