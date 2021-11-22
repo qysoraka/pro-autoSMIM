@@ -380,4 +380,21 @@ class Rotation_Model(Base_Module):
 
         loss = self.criteria(output, rot_target)
         acc = accuracy_score(
-            torch.argmax(output, 
+            torch.argmax(output, dim=1).cpu().numpy(), rot_target.cpu().numpy()
+        )
+
+        self.log(
+            "Rotation Validation Loss",
+            loss,
+            on_epoch=True,
+            sync_dist=True,
+            on_step=False,
+            prog_bar=True,
+        )
+        self.log(
+            "Rotation Validation Acc",
+            acc,
+            on_epoch=True,
+            sync_dist=True,
+            on_step=False,
+            prog
