@@ -411,4 +411,14 @@ class Rotation_Model(Base_Module):
             os.makedirs(dirname)
 
         input, _, _, _ = batch
-        input = inpu
+        input = input[:, :-1, :, :]
+        rot_input, rot_target = rotate_images(input)
+        output = self(rot_input)
+
+        loss = self.criteria(output, rot_target)
+        self.log("Test Loss", loss)
+
+        pred = torch.argmax(output, dim=1)
+        self.test_pred.extend(pred.cpu().numpy())
+        self.test_target.extend(rot_target.cpu().numpy())
+        self.test_loss.append(l
