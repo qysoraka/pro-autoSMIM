@@ -421,4 +421,16 @@ class Rotation_Model(Base_Module):
         pred = torch.argmax(output, dim=1)
         self.test_pred.extend(pred.cpu().numpy())
         self.test_target.extend(rot_target.cpu().numpy())
-        self.test_loss.append(l
+        self.test_loss.append(loss.cpu().numpy())
+
+    def on_test_epoch_end(self):
+        norm = np.linalg.norm(self.test_loss)
+        norm_loss = np.mean(self.test_loss / norm)
+        self.acc = accuracy_score(self.test_target, self.test_pred)
+        self.log("Test Acc", self.acc)
+        self.log("Test Norm Loss", norm_loss)
+
+
+class Jigsaw_Model(Base_Module):
+    def __init__(self, args, criteria):
+        super(Jigs
