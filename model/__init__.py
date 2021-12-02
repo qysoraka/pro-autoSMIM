@@ -433,4 +433,17 @@ class Rotation_Model(Base_Module):
 
 class Jigsaw_Model(Base_Module):
     def __init__(self, args, criteria):
-        super(Jigs
+        super(Jigsaw_Model, self).__init__(args=args)
+
+        self.criteria = criteria[1]
+
+    def forward(self, x):
+        index = int(x.shape[0] / 4)
+        for i in range(0, x.shape[0], index):
+            piece = x[i:i + index]
+            x0 = self.encoder(piece)
+            x1 = self.pred_sequential(x0[-1])
+            if i == 0:
+                pieces = x1
+            else:
+                pieces = torch.cat([pieces, x1]
