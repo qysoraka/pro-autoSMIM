@@ -446,4 +446,20 @@ class Jigsaw_Model(Base_Module):
             if i == 0:
                 pieces = x1
             else:
-                pieces = torch.cat([pieces, x1]
+                pieces = torch.cat([pieces, x1], dim=1)
+        y = self.pred_process(pieces)
+
+        return y
+
+    def training_step(self, batch, batch_idx):
+        input, _, _ = batch
+        input = input[:, :-1, :, :]
+        jigsaw_input, jigsaw_target = jigsaw(input, row=2, col=2)
+        output = self(jigsaw_input)
+
+        loss = self.criteria(output, jigsaw_target)
+        self.log(
+            "Jigsaw Train Loss",
+            loss,
+            on_step=False,
+  
