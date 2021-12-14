@@ -477,3 +477,18 @@ class Jigsaw_Model(Base_Module):
 
         loss = self.criteria(output, jigsaw_target)
         acc = accuracy_score(
+            torch.argmax(output, dim=1).cpu().numpy(), jigsaw_target.cpu().numpy()
+        )
+
+        self.log(
+            "Jigsaw Validation Loss",
+            loss,
+            on_epoch=True,
+            sync_dist=True,
+            on_step=False,
+            prog_bar=True,
+        )
+        self.log(
+            "Jigsaw Validation Acc",
+            acc,
+            on_epoch=Tr
