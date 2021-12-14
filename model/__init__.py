@@ -462,4 +462,18 @@ class Jigsaw_Model(Base_Module):
             "Jigsaw Train Loss",
             loss,
             on_step=False,
-  
+            on_epoch=True,
+            prog_bar=True,
+            logger=True,
+        )
+
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        input, _, _, _ = batch
+        input = input[:, :-1, :, :]
+        jigsaw_input, jigsaw_target = jigsaw(input, row=2, col=2)
+        output = self(jigsaw_input)
+
+        loss = self.criteria(output, jigsaw_target)
+        acc = accuracy_score(
