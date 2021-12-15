@@ -491,4 +491,20 @@ class Jigsaw_Model(Base_Module):
         self.log(
             "Jigsaw Validation Acc",
             acc,
-            on_epoch=Tr
+            on_epoch=True,
+            sync_dist=True,
+            on_step=False,
+            prog_bar=True,
+        )
+
+    def on_test_start(self):
+        self.test_pred = []
+        self.test_target = []
+        self.test_loss = []
+
+    def test_step(self, batch, batch_idx):
+        dirname = "{}/results_rotation".format(self.args.save_name)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+
+        input
