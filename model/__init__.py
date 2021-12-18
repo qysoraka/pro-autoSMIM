@@ -530,4 +530,14 @@ class Jigsaw_Model(Base_Module):
         self.log("Test Norm Loss", norm_loss)
 
 
-d
+def load_model(criteria, args):
+    print("=> creating model '{}'".format(args.model))
+    if "X_Ray" in args.dataset_name:
+        input_channel = 1
+    else:
+        input_channel = 3
+    m = import_module("model." + args.model.lower())
+
+    model = getattr(m, args.model)(args, input_channel=input_channel, criteria=criteria)
+    if args.pretrained is not None:
+        model.init_weights(
