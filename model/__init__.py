@@ -507,4 +507,14 @@ class Jigsaw_Model(Base_Module):
         if not os.path.exists(dirname):
             os.makedirs(dirname)
 
-        input
+        input, _, _, _ = batch
+        input = input[:, :-1, :, :]
+        jigsaw_input, jigsaw_target = jigsaw(input, row=2, col=2)
+        output = self(jigsaw_input)
+
+        loss = self.criteria(output, jigsaw_target)
+        self.log("Test Loss", loss)
+
+        pred = torch.argmax(output, dim=1)
+        self.test_pred.extend(pred.cpu().numpy())
+        self.test_target.extend(jigsaw_
