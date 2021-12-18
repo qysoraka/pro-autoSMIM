@@ -540,4 +540,19 @@ def load_model(criteria, args):
 
     model = getattr(m, args.model)(args, input_channel=input_channel, criteria=criteria)
     if args.pretrained is not None:
-        model.init_weights(
+        model.init_weights(args.pretrained)
+
+    return model
+
+
+def load_series_model(criteria, args):
+    print("=> creating series model : '{}'".format(args.model))
+    if "X_Ray" in args.dataset_name:
+        input_channel = 1
+    else:
+        input_channel = 3
+    m = import_module("model." + args.model.lower())
+    models = {}
+
+    inpainting_model = "Context_" + args.model
+    models["inpainting"] = ge
