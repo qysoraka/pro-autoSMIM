@@ -555,4 +555,13 @@ def load_series_model(criteria, args):
     models = {}
 
     inpainting_model = "Context_" + args.model
-    models["inpainting"] = ge
+    models["inpainting"] = getattr(m, inpainting_model)(
+        args, input_channel=input_channel, criteria=criteria, inpainting=True
+    )
+    models["colorization"] = getattr(m, inpainting_model)(
+        args, input_channel=input_channel, criteria=criteria, inpainting=False
+    )
+
+    rot_model = "Rotation_" + args.model
+    models["rotation"] = getattr(m, rot_model)(
+        args, input_channel=inpu
