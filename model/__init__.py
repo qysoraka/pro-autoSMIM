@@ -564,4 +564,12 @@ def load_series_model(criteria, args):
 
     rot_model = "Rotation_" + args.model
     models["rotation"] = getattr(m, rot_model)(
-        args, input_channel=inpu
+        args, input_channel=input_channel, criteria=criteria
+    )
+
+    rot_model = "Jigsaw_" + args.model
+    models["jigsaw"] = getattr(m, rot_model)(
+        args, input_channel=input_channel, criteria=criteria
+    )
+
+    return models
