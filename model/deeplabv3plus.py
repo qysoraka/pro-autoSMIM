@@ -14,3 +14,15 @@ class Deeplabv3plus(Model):
             depth=5,
             weights='imagenet',
             output_stride=16,
+        )
+
+        self.decoder = DeepLabV3PlusDecoder(
+            encoder_channels=self.encoder.out_channels,
+            out_channels=256,
+            atrous_rates=(12, 24, 36),
+            output_stride=16,
+        )
+
+        self.pred_seg = nn.Sequential(
+            nn.Conv2d(in_channels=256, out_channels=2, kernel_size=1),
+            nn.UpsamplingBiline
