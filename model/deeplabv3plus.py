@@ -25,4 +25,17 @@ class Deeplabv3plus(Model):
 
         self.pred_seg = nn.Sequential(
             nn.Conv2d(in_channels=256, out_channels=2, kernel_size=1),
-            nn.UpsamplingBiline
+            nn.UpsamplingBilinear2d(scale_factor=4),
+        )
+
+        self.initialize(self.decoder, self.pred_seg)
+
+
+class Context_Deeplabv3plus(Context_Model):
+    def __init__(self, args, input_channel=3, criteria=None, inpainting=True):
+        super(Context_Deeplabv3plus, self).__init__(
+            args=args, criteria=criteria, inpainting=inpainting
+        )
+
+        self.encoder = get_encoder(
+            name='resnet
