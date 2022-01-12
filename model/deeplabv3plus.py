@@ -38,4 +38,19 @@ class Context_Deeplabv3plus(Context_Model):
         )
 
         self.encoder = get_encoder(
-            name='resnet
+            name='resnet50',
+            in_channels=input_channel,
+            depth=5,
+            weights=None,
+            output_stride=16,
+        )
+
+        self.decoder = DeepLabV3PlusDecoder(
+            encoder_channels=self.encoder.out_channels,
+            out_channels=256,
+            atrous_rates=(12, 24, 36),
+            output_stride=16,
+        )
+
+        self.pred = nn.Sequential(
+            nn.
