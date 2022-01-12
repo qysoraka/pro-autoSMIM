@@ -53,4 +53,16 @@ class Context_Deeplabv3plus(Context_Model):
         )
 
         self.pred = nn.Sequential(
-            nn.
+            nn.Conv2d(in_channels=256, out_channels=input_channel, kernel_size=1),
+            nn.UpsamplingBilinear2d(scale_factor=4),
+        )
+
+        self.initialize(self.decoder, self.pred)
+
+
+class Rotation_Deeplabv3plus(Rotation_Model):
+    def __init__(self, args, input_channel=3, criteria=None):
+        super(Rotation_Deeplabv3plus, self).__init__(args=args, criteria=criteria)
+
+        self.encoder = get_encoder(
+            name=a
