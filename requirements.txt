@@ -76,4 +76,21 @@ monai==1.1.0
 mpmath==1.2.1
 multidict==6.0.4
 munch==2.5.0
-networkx @
+networkx @ file:///croot/networkx_1678964333703/work
+nni==2.10.1
+numpy @ file:///work/mkl/numpy_and_numpy_base_1682953417311/work
+nvidia-ml-py==11.525.112
+oauthlib==3.2.2
+opencv-python==4.7.0.72
+openmim==0.3.7
+openpyxl==3.1.2
+ordered-set==4.1.0
+packaging==23.1
+pandas==2.0.1
+pathtools==0.1.2
+Pillow==9.4.0
+pretrainedmodels==0.7.4
+prettytable==3.7.0
+protobuf==3.20.3
+psutil==5.9.5
+py
