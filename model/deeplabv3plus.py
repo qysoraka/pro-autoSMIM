@@ -89,4 +89,17 @@ class Jigsaw_Deeplabv3plus(Jigsaw_Model):
         )
 
         for param in self.encoder.parameters():
- 
+            param.requires_grad = False
+
+        self.pred_sequential = nn.Sequential(
+            nn.AdaptiveAvgPool2d(1),
+            nn.Flatten(),
+            nn.Linear(self.encoder.out_channels[-1], 512, bias=True),
+        )
+
+        self.pred_process = nn.Sequential(
+            nn.Linear(2048, 24, bias=True),
+        )
+
+        self.initialize(None, self.pred_sequential)
+        self.initialize(None, self.pred_
