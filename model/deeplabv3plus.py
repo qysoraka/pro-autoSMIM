@@ -102,4 +102,4 @@ class Jigsaw_Deeplabv3plus(Jigsaw_Model):
         )
 
         self.initialize(None, self.pred_sequential)
-        self.initialize(None, self.pred_
+        self.initialize(None, self.pred_process)
