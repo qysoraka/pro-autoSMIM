@@ -65,4 +65,19 @@ class Rotation_Deeplabv3plus(Rotation_Model):
         super(Rotation_Deeplabv3plus, self).__init__(args=args, criteria=criteria)
 
         self.encoder = get_encoder(
-            name=a
+            name=args.encoder, in_channels=input_channel, depth=5, weights=None
+        )
+
+        for param in self.encoder.parameters():
+            param.requires_grad = False
+
+        self.pred = nn.Sequential(
+            nn.AdaptiveAvgPool2d(1),
+            nn.Flatten(),
+            nn.Linear(self.encoder.out_channels[-1], 4, bias=True),
+        )
+
+        self.initialize(None, self.pred)
+
+
+class Ji
