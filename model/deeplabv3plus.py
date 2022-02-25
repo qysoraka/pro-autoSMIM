@@ -80,4 +80,13 @@ class Rotation_Deeplabv3plus(Rotation_Model):
         self.initialize(None, self.pred)
 
 
-class Ji
+class Jigsaw_Deeplabv3plus(Jigsaw_Model):
+    def __init__(self, args, input_channel=3, criteria=None):
+        super(Jigsaw_Deeplabv3plus, self).__init__(args=args, criteria=criteria)
+
+        self.encoder = get_encoder(
+            name=args.encoder, in_channels=input_channel, depth=5, weights=None
+        )
+
+        for param in self.encoder.parameters():
+ 
