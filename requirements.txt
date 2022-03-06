@@ -93,4 +93,18 @@ pretrainedmodels==0.7.4
 prettytable==3.7.0
 protobuf==3.20.3
 psutil==5.9.5
-py
+pyasn1==0.5.0
+pyasn1-modules==0.3.0
+pycodestyle==2.10.0
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pydantic==1.10.7
+pyflakes==3.0.1
+Pygments==2.15.1
+PyJWT==2.6.0
+pyOpenSSL @ file:///croot/pyopenssl_1677607685877/work
+pyparsing==3.0.9
+PySocks @ file:///tmp/build/80754af9/pysocks_1605305779399/work
+python-dateutil==2.8.2
+python-editor==1.0.4
+python-multipart==0.0.6
+Pyth
