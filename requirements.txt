@@ -148,4 +148,21 @@ tomli==2.0.1
 torch==2.0.0
 torch-tb-profiler==0.4.1
 torchaudio==2.0.0
-torchmetric
+torchmetrics==0.11.4
+torchvision==0.15.0
+tqdm==4.65.0
+traitlets==5.9.0
+transformers==4.29.0
+triton==2.0.0
+typeguard==2.13.3
+types-PyYAML==6.0.12.10
+typing_extensions @ file:///croot/typing_extensions_1681939499988/work
+tzdata==2023.3
+urllib3 @ file:///croot/urllib3_1680254681959/work
+uvicorn==0.22.0
+wandb==0.15.4
+wcwidth==0.2.6
+websocket-client==1.5.1
+websockets==11.0.2
+Werkzeug==2.3.4
+yapf==0.33.0
