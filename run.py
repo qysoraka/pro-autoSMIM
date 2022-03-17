@@ -53,4 +53,18 @@ def main():
         help="inference mini-batch size (default: 1)",
     )
     parser.add_argument(
-        "--
+        "--epoch",
+        default=100,
+        type=int,
+        metavar="N",
+        help="training epoch (default: 100)",
+    )
+    parser.add_argument(
+        "--resume",
+        default=-1,
+        type=int,
+        metavar="N",
+        help="resume from which fold (default: -1)",
+    )
+    parser.add_argument("--lr", type=float, default=1e-3, help="learning rate")
+    parser.a
