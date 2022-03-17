@@ -40,4 +40,17 @@ def main():
         "--batch_size",
         default=128,
         type=int,
-        meta
+        metavar="N",
+        help="mini-batch size (default: 128), this is the total "
+        "batch size of all GPUs on the current node when "
+        "using Data Parallel or Distributed Data Parallel",
+    )
+    parser.add_argument(
+        "--test_batch_size",
+        default=12,
+        type=int,
+        metavar="N",
+        help="inference mini-batch size (default: 1)",
+    )
+    parser.add_argument(
+        "--
