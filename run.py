@@ -24,3 +24,20 @@ def main():
         default="./configs.yaml",
         type=str,
         help="Config file used for experiment",
+    )
+    parser.add_argument(
+        "--workers",
+        default=10,
+        type=int,
+        metavar="N",
+        help="number of data loading workers",
+    )
+    parser.add_argument("--gpu", default=None, type=int, help="GPU id to use.")
+
+    # training configuration
+    parser.add_argument(
+        "-b",
+        "--batch_size",
+        default=128,
+        type=int,
+        meta
