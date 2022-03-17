@@ -67,4 +67,13 @@ def main():
         help="resume from which fold (default: -1)",
     )
     parser.add_argument("--lr", type=float, default=1e-3, help="learning rate")
-    parser.a
+    parser.add_argument(
+        "--optimizer",
+        default="ADAM",
+        choices=("SGD", "ADAM", "RMSprop"),
+        help="optimizer to use (SGD | ADAM | RMSprop)",
+    )
+    parser.add_argument("--pretrained", default="", help="pretrained model weights")
+    parser.add_argument("--size", type=int, default=512, help="size of input image")
+    parser.add_argument(
+        "--dice_loss", action="store_true"
