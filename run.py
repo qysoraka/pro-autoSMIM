@@ -76,4 +76,16 @@ def main():
     parser.add_argument("--pretrained", default="", help="pretrained model weights")
     parser.add_argument("--size", type=int, default=512, help="size of input image")
     parser.add_argument(
-        "--dice_loss", action="store_true"
+        "--dice_loss", action="store_true", help="using dice loss or not"
+    )
+
+    # model specifications
+    parser.add_argument("--model", type=str, default="UNet", help="model name")
+    parser.add_argument(
+        "--encoder", type=str, default="resnet50", help="encoder name of the model"
+    )
+    parser.add_argument(
+        "--no_crop", action="store_true", help="disable random resized cropping"
+    )
+
+    # experiment conf
