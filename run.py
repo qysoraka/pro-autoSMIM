@@ -88,4 +88,17 @@ def main():
         "--no_crop", action="store_true", help="disable random resized cropping"
     )
 
-    # experiment conf
+    # experiment configuration
+    parser.add_argument(
+        "--save_results", action="store_true", help="save context results or not"
+    )
+    parser.add_argument("--save_name", default="smoke", help="experiment name")
+    parser.add_argument(
+        "--dataset_name",
+        default="staining134",
+        help="dataset name [staining134 / dataset / HRF]",
+    )
+    parser.add_argument(
+        "--eval_metric",
+        type=str,
+        de
