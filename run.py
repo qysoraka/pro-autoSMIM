@@ -101,4 +101,10 @@ def main():
     parser.add_argument(
         "--eval_metric",
         type=str,
-        de
+        default="rotation",
+        help="evaluation metric [inpainting / rotation / colirization]",
+    )
+    parser.add_argument("--kfold", action="store_true", help="5-fold cross-validation")
+    parser.add_argument("--smoke_test", action="store_true", help="debug mode")
+    parser.add_argument(
+        "--description", default="", type=str, help="description of t
