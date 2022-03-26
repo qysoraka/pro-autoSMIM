@@ -107,4 +107,17 @@ def main():
     parser.add_argument("--kfold", action="store_true", help="5-fold cross-validation")
     parser.add_argument("--smoke_test", action="store_true", help="debug mode")
     parser.add_argument(
-        "--description", default="", type=str, help="description of t
+        "--description", default="", type=str, help="description of the experiment"
+    )
+    parser.add_argument(
+        "--aug_k", type=int, default=40, help="number of generating superpixels"
+    )
+    parser.add_argument(
+        "--aug_n",
+        type=int,
+        default=1,
+        help="number of superpixel selected for inpainting",
+    )
+    parser.add_argument("--patch", action="store_true", help="mask using random patch")
+    parser.add_argument(
+   
