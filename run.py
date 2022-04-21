@@ -120,4 +120,17 @@ def main():
     )
     parser.add_argument("--patch", action="store_true", help="mask using random patch")
     parser.add_argument(
-   
+        "--seed", type=int, default=436, help="global setting for random seed"
+    )
+    parser.add_argument(
+        "--percent",
+        type=float,
+        default=100,
+        help="percentage of training data used for training",
+    )
+
+    # Wandb configuration
+    parser.add_argument(
+        "--log_name", default="", type=str, help="description of the wandb logger"
+    )
+ 
