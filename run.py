@@ -144,4 +144,16 @@ def main():
     parser.add_argument(
         "--update_config",
         action="store_true",
- 
+        help="update wandb config for existing experiments",
+    )
+    parser.add_argument(
+        "--optimization", action="store_true", help="doing nni optimization"
+    )
+    parser.add_argument("--evaluate", action="store_true", help="evaluate only")
+    parser.add_argument(
+        "--inpainting",
+        action="store_true",
+        help="doing inpainting and other self supervised progress",
+    )
+
+  
