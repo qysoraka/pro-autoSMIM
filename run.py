@@ -168,4 +168,15 @@ def main():
         if vars(args)[arg] == "True":
             vars(args)[arg] = True
         elif vars(args)[arg] == "False":
-            vars(args)[arg
+            vars(args)[arg] = False
+
+    dirname = "{}".format(args.save_name)
+    if not os.path.isdir(dirname):
+        os.makedirs(dirname)
+
+    if not args.smoke_test and not args.update_config:
+        if args.resume_wandb:
+            print("=> Resuming Wandb logger")
+            # Need modification if you want to use WandB
+            args.logger = WandbLogger(
+                project="your_project_name",
