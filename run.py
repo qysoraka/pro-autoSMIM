@@ -156,4 +156,16 @@ def main():
         help="doing inpainting and other self supervised progress",
     )
 
-  
+    args = parser.parse_args()
+
+    with open(args.cfg, encoding="utf-8") as f:
+        config = yaml.load(f.read(), Loader=yaml.FullLoader)
+        opt = vars(args)
+        opt.update(config)
+        args = Namespace(**opt)
+
+    for arg in vars(args):
+        if vars(args)[arg] == "True":
+            vars(args)[arg] = True
+        elif vars(args)[arg] == "False":
+            vars(args)[arg
