@@ -133,4 +133,15 @@ def main():
     parser.add_argument(
         "--log_name", default="", type=str, help="description of the wandb logger"
     )
+    parser.add_argument("--tags", default=[], help="tags for wandb")
+    parser.add_argument(
+        "--resume_wandb", action="store_true", help="resume experiment for wandb"
+    )
+    parser.add_argument(
+        "--id", type=str, default="wzh is hangua", help="resume id for wandb"
+    )
+
+    parser.add_argument(
+        "--update_config",
+        action="store_true",
  
