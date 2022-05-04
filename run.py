@@ -191,4 +191,13 @@ def main():
                 args.logger.experiment.config.update(args, allow_val_change=True)
                 wandb.run.log_code(".")
         else:
-            pr
+            print("=> Making Wandb logger")
+            args.logger = WandbLogger(
+                project="your_project_name",
+                entity="your_entity_name",
+                name=args.log_name,
+                tags=args.tags,
+                notes=args.description,
+            )
+            if get_rank() == 0:
+                args.logger.experiment.config.update(args, allow_val_
