@@ -200,4 +200,17 @@ def main():
                 notes=args.description,
             )
             if get_rank() == 0:
-                args.logger.experiment.config.update(args, allow_val_
+                args.logger.experiment.config.update(args, allow_val_change=True)
+                wandb.run.log_code(".")
+    else:
+        print("=> Using local csv logger")
+        args.logger = CSVLogger(
+            save_dir=args.save_name,
+            name=args.log_name,
+            flush_logs_every_n_steps=50
+        )
+
+    seed_everything(args.seed, workers=True)
+    if args.inpainting:
+        if args.evaluate:
+        
