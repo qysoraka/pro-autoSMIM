@@ -213,4 +213,12 @@ def main():
     seed_everything(args.seed, workers=True)
     if args.inpainting:
         if args.evaluate:
-        
+            test_aug_worker(args, aug_k=args.aug_k, aug_n=args.aug_n)
+        else:
+            print("=> Start inpainting and self supervised evaluation")
+            train_aug_worker(args)
+            print("=> Process finished")
+    elif args.optimization:
+        print("=> Running nni for optimization")
+        params = nni.get_next_parameter()
+        p
