@@ -221,4 +221,15 @@ def main():
     elif args.optimization:
         print("=> Running nni for optimization")
         params = nni.get_next_parameter()
-        p
+        print("=> Param: ", params)
+        nni_result = test_aug_worker(args, **params)
+        nni.report_final_result(nni_result)
+    elif args.evaluate:
+        print("=> Only evaluating")
+        test_worker(args)
+    else:
+        print("=> Start segmentation training process")
+        train_worker(args)
+        print("=> Segmentation training process finished")
+
+        print("=> Start testing 
