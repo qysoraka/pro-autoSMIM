@@ -232,4 +232,10 @@ def main():
         train_worker(args)
         print("=> Segmentation training process finished")
 
-        print("=> Start testing 
+        print("=> Start testing segmentation model")
+        test_worker(args)
+        print("=> Segmentation model test finished")
+
+
+if __name__ == "__main__":
+    main()
