@@ -36,3 +36,14 @@ def one_hot(t: Tensor, axis=1) -> bool:
     return simplex(t, axis) and sset(t, [0, 1])
 
 
+# # Metrics and shitz
+def meta_dice(sum_str: str, label: Tensor, pred: Tensor, smooth: float = 1e-8) -> float:
+    assert label.shape == pred.shape
+    assert one_hot(label)
+    assert one_hot(pred)
+
+    inter_size: Tensor = einsum(sum_str, [intersection(label, pred)]).type(
+        torch.float32
+    )
+    sum_sizes: Tensor = (einsum(sum_str, [label]) + einsum(sum_str, [pred])).type(
+        torch.flo
