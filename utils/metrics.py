@@ -65,4 +65,20 @@ def intersection(a: Tensor, b: Tensor) -> Tensor:
     return a & b
 
 
-def union(a: Tensor, b: Tensor) -> Tenso
+def union(a: Tensor, b: Tensor) -> Tensor:
+    assert a.shape == b.shape
+    assert sset(a, [0, 1])
+    assert sset(b, [0, 1])
+    return a | b
+
+
+def haussdorf(preds: Tensor, target: Tensor) -> Tensor:
+    assert preds.shape == target.shape
+    assert one_hot(preds)
+    assert one_hot(target)
+
+    B, C, _, _ = preds.shape
+
+    res = torch.zeros((B, C), dtype=torch.float32, device=preds.device)
+    n_pred = preds.cpu().numpy()
+    n_target = t
