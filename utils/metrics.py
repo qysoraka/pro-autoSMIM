@@ -81,4 +81,19 @@ def haussdorf(preds: Tensor, target: Tensor) -> Tensor:
 
     res = torch.zeros((B, C), dtype=torch.float32, device=preds.device)
     n_pred = preds.cpu().numpy()
-    n_target = t
+    n_target = target.cpu().numpy()
+
+    for b in range(B):
+        if C == 2:
+            res[b, :] = numpy_haussdorf(n_pred[b, 0], n_target[b, 0])
+            continue
+
+        for c in range(C):
+            res[b, c] = numpy_haussdorf(n_pred[b, c], n_target[b, c])
+
+    return res
+
+
+def numpy_haussdorf(pred: np.ndarray, target: np.ndarray) -> float:
+    assert len(pred.shape) == 2
+    assert pred.shape == t
