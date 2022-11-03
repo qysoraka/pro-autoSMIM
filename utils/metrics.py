@@ -46,4 +46,23 @@ def meta_dice(sum_str: str, label: Tensor, pred: Tensor, smooth: float = 1e-8) -
         torch.float32
     )
     sum_sizes: Tensor = (einsum(sum_str, [label]) + einsum(sum_str, [pred])).type(
-        torch.flo
+        torch.float32
+    )
+
+    dices: Tensor = (2 * inter_size + smooth) / (sum_sizes + smooth)
+
+    return dices
+
+
+dice_coef = partial(meta_dice, "bcwh->bc")
+dice_batch = partial(meta_dice, "bcwh->c")  # used for 3d dice
+
+
+def intersection(a: Tensor, b: Tensor) -> Tensor:
+    assert a.shape == b.shape
+    assert sset(a, [0, 1])
+    assert sset(b, [0, 1])
+    return a & b
+
+
+def union(a: Tensor, b: Tensor) -> Tenso
