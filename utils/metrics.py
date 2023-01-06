@@ -96,4 +96,21 @@ def haussdorf(preds: Tensor, target: Tensor) -> Tensor:
 
 def numpy_haussdorf(pred: np.ndarray, target: np.ndarray) -> float:
     assert len(pred.shape) == 2
-    assert pred.shape == t
+    assert pred.shape == target.shape
+
+    return max(directed_hausdorff(pred, target)[0], directed_hausdorff(target, pred)[0])
+
+
+# switch between representations
+def probs2class(probs: Tensor) -> Tensor:
+    b, _, w, h = probs.shape  # Tuple[int, int, int, int]
+    assert simplex(probs)
+
+    res = probs.argmax(dim=1)
+    assert res.shape == (b, w, h)
+
+    return res
+
+
+def class2one_hot(seg: Tensor, C: int) -> Tensor:
+    if len(seg.shape) 
