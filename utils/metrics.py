@@ -113,4 +113,19 @@ def probs2class(probs: Tensor) -> Tensor:
 
 
 def class2one_hot(seg: Tensor, C: int) -> Tensor:
-    if len(seg.shape) 
+    if len(seg.shape) == 2:  # Only w, h, used by the dataloader
+        seg = seg.unsqueeze(dim=0)
+    assert sset(seg, list(range(C)))
+
+    b, w, h = seg.shape  # Tuple[int, int, int]
+
+    res = torch.stack([seg == c for c in range(C)], dim=1).type(torch.int32)
+    assert res.shape == (b, C, w, h)
+    assert one_hot(res)
+
+    return res
+
+
+def probs2one_hot(probs: Tensor) -> Tensor:
+    _, C, _, _ = probs.shape
+    assert sim
