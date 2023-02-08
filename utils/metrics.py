@@ -128,4 +128,22 @@ def class2one_hot(seg: Tensor, C: int) -> Tensor:
 
 def probs2one_hot(probs: Tensor) -> Tensor:
     _, C, _, _ = probs.shape
-    assert sim
+    assert simplex(probs)
+
+    res = class2one_hot(probs2class(probs), C)
+    assert res.shape == probs.shape
+    assert one_hot(res)
+
+    return res
+
+
+def one_hot2dist(seg: np.ndarray) -> np.ndarray:
+    assert one_hot(torch.Tensor(seg), axis=0)
+    C: int = len(seg)
+
+    res = np.zeros_like(seg)
+    for c in range(C):
+        posmask = seg[c].astype(np.bool)
+
+        if posmask.any():
+            negmask = ~posmask
