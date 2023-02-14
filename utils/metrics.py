@@ -147,3 +147,21 @@ def one_hot2dist(seg: np.ndarray) -> np.ndarray:
 
         if posmask.any():
             negmask = ~posmask
+            res[c] = distance(negmask) * negmask - (distance(posmask) - 1) * posmask
+    return res
+
+
+def nanmean(x):
+    """Computes the arithmetic mean ignoring any NaNs."""
+    return torch.mean(x[x == x])
+
+
+def onehot2indice(x):
+    """Convert NCHW to NHW."""
+    return torch.argmax(x, dim=1)
+
+
+def _fast_hist(true, pred, num_classes):
+    mask = (true >= 0) & (true < num_classes)
+    hist = (
+        torch.b
