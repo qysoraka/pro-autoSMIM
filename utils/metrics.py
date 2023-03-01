@@ -164,4 +164,20 @@ def onehot2indice(x):
 def _fast_hist(true, pred, num_classes):
     mask = (true >= 0) & (true < num_classes)
     hist = (
-        torch.b
+        torch.bincount(
+            num_classes * true[mask] + pred[mask],
+            minlength=num_classes**2,
+        )
+        .reshape(num_classes, num_classes)
+        .float()
+    )
+    return hist
+
+
+def dice_coefficient(hist):
+    """Computes the Sørensen–Dice coefficient, a.k.a the F1 score.
+    Args:
+        hist: confusion matrix.
+    Returns:
+        dice: per-class dice coefficients.
+     
