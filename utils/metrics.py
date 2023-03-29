@@ -194,4 +194,17 @@ def single_dice_coefficient(preds, label):
     fake = onehot2indice(preds)
     real = label.long()
     hist = _fast_hist(real, fake, num_classes=2)
-    dice, _ = dice_coefficient(h
+    dice, _ = dice_coefficient(hist)
+    # return dice of key object
+    return dice[1]
+
+
+def accuracy(output, target, topk=(1,)):
+    """Computes the accuracy over the k top predictions for the specified values of k"""
+    with torch.no_grad():
+        maxk = max(topk)
+        batch_size = target.size(0)
+
+        _, pred = output.topk(maxk, 1, True, True)
+        pred = pred.t()
+        correct = pred.eq(target.view
