@@ -180,4 +180,18 @@ def dice_coefficient(hist):
         hist: confusion matrix.
     Returns:
         dice: per-class dice coefficients.
-     
+        avg_dice: the average per-class dice coefficient.
+    """
+    A_inter_B = torch.diag(hist)
+    A = hist.sum(dim=1)
+    B = hist.sum(dim=0)
+    dice = (2 * A_inter_B) / (A + B + EPS)
+    avg_dice = nanmean(dice)
+    return dice, avg_dice
+
+
+def single_dice_coefficient(preds, label):
+    fake = onehot2indice(preds)
+    real = label.long()
+    hist = _fast_hist(real, fake, num_classes=2)
+    dice, _ = dice_coefficient(h
