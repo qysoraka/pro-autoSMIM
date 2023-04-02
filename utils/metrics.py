@@ -237,4 +237,15 @@ def dc(result, reference):
         Input data containing objects. Can be any type but will be converted
         into binary: background where 0, object everywhere else.
     reference : array_like
-        Input data containing objects
+        Input data containing objects. Can be any type but will be converted
+        into binary: background where 0, object everywhere else.
+
+    Returns
+    -------
+    dc : float
+        The Dice coefficient between the object(s) in ```result``` and the
+        object(s) in ```reference```. It ranges from 0 (no overlap) to 1 (perfect overlap).
+
+    Notes
+    -----
+    This is a real metric. The binary images can theref
