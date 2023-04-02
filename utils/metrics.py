@@ -223,4 +223,18 @@ def dc(result, reference):
     Computes the Dice coefficient (also known as Sorensen index) between the binary
     objects in two images.
 
-    The metric is defi
+    The metric is defined as
+
+    .. math::
+
+        DC=\frac{2|A\cap B|}{|A|+|B|}
+
+    , where :math:`A` is the first and :math:`B` the second set of samples (here: binary objects).
+
+    Parameters
+    ----------
+    result : array_like
+        Input data containing objects. Can be any type but will be converted
+        into binary: background where 0, object everywhere else.
+    reference : array_like
+        Input data containing objects
