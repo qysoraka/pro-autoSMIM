@@ -248,4 +248,17 @@ def dc(result, reference):
 
     Notes
     -----
-    This is a real metric. The binary images can theref
+    This is a real metric. The binary images can therefore be supplied in any order.
+    """
+    result = np.atleast_1d(result.astype(np.bool))
+    reference = np.atleast_1d(reference.astype(np.bool))
+
+    intersection = np.count_nonzero(result & reference)
+
+    size_i1 = np.count_nonzero(result)
+    size_i2 = np.count_nonzero(reference)
+
+    try:
+        dc = 2.0 * intersection / (float(size_i1 + size_i2) + 1e-6)
+    except ZeroDivisionError:
+    
