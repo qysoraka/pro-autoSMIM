@@ -261,4 +261,20 @@ def dc(result, reference):
     try:
         dc = 2.0 * intersection / (float(size_i1 + size_i2) + 1e-6)
     except ZeroDivisionError:
-    
+        dc = 0.0
+
+    return dc
+
+
+def jc(result, reference):
+    """
+    Jaccard coefficient
+
+    Computes the Jaccard coefficient between the binary objects in two images.
+
+    Parameters
+    ----------
+    result: array_like
+            Input data containing objects. Can be any type but will be converted
+            into binary: background where 0, object everywhere else.
+    referen
