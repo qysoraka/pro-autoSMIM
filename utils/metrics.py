@@ -277,4 +277,15 @@ def jc(result, reference):
     result: array_like
             Input data containing objects. Can be any type but will be converted
             into binary: background where 0, object everywhere else.
-    referen
+    reference: array_like
+            Input data containing objects. Can be any type but will be converted
+            into binary: background where 0, object everywhere else.
+    Returns
+    -------
+    jc: float
+        The Jaccard coefficient between the object(s) in `result` and the
+        object(s) in `reference`. It ranges from 0 (no overlap) to 1 (perfect overlap).
+
+    Notes
+    -----
+    This is a real metric. T
