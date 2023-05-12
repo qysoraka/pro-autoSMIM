@@ -288,4 +288,17 @@ def jc(result, reference):
 
     Notes
     -----
-    This is a real metric. T
+    This is a real metric. The binary images can therefore be supplied in any order.
+    """
+    result = np.atleast_1d(result.astype(np.bool))
+    reference = np.atleast_1d(reference.astype(np.bool))
+
+    intersection = np.count_nonzero(result & reference)
+    union = np.count_nonzero(result | reference)
+
+    jc = float(intersection) / (float(union) + 1e-6)
+
+    return jc
+
+
+def val_dice(predi
