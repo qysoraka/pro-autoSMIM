@@ -310,4 +310,17 @@ def val_dice(prediction, soft_ground_truth, num_class):
     ref_vol = torch.sum(ground, 0)
     intersect = torch.sum(ground * pred, 0)
     seg_vol = torch.sum(pred, 0)
-    # dice_score = 2.0 * int
+    # dice_score = 2.0 * intersect / (ref_vol + seg_vol + 1.0)
+    dice_score = 2.0 * intersect / (ref_vol + seg_vol + 1e-6)
+    # dice_mean_score = torch.mean(dice_score)
+
+    return dice_score
+
+
+def val_acc(result, reference):
+    result = np.atleast_1d(result.astype(np.bool))
+    reference = np.atleast_1d(reference.astype(np.bool))
+
+    tp = np.count_nonzero(result & reference)
+    tn = np.count_nonzero(~result & ~reference)
+    fp = np.coun
