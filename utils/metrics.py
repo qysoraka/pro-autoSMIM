@@ -301,4 +301,13 @@ def jc(result, reference):
     return jc
 
 
-def val_dice(predi
+def val_dice(prediction, soft_ground_truth, num_class):
+    # predict = prediction.permute(0, 2, 3, 1)
+    # pred = prediction.contiguous().view(-1, num_class)
+    pred = prediction.view(-1, num_class)
+    # pred = F.softmax(pred, dim=1)
+    ground = soft_ground_truth.view(-1, num_class)
+    ref_vol = torch.sum(ground, 0)
+    intersect = torch.sum(ground * pred, 0)
+    seg_vol = torch.sum(pred, 0)
+    # dice_score = 2.0 * int
