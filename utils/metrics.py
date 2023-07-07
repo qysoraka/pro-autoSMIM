@@ -323,4 +323,12 @@ def val_acc(result, reference):
 
     tp = np.count_nonzero(result & reference)
     tn = np.count_nonzero(~result & ~reference)
-    fp = np.coun
+    fp = np.count_nonzero(result & ~reference)
+    fn = np.count_nonzero(~result & reference)
+
+    try:
+        ACC = (tp + tn) / (tp + tn + fp + fn)
+    except ZeroDivisionError:
+        ACC = 0.0
+
+    return ACC
