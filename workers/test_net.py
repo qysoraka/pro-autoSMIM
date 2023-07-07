@@ -48,3 +48,34 @@ def test_aug_worker(args, aug_k=40, aug_n=1):
         test_dataset = load_dataset(
             args, fold=fold, train=False, aug_k=aug_k, aug_n=aug_n
         )
+        criteria = load_criteria(args)
+        models = load_series_model(criteria, args)
+        test_loader = DataLoader(
+            test_dataset,
+            batch_size=args.test_batch_size,
+            shuffle=False,
+            num_workers=args.workers,
+            pin_memory=True,
+            drop_last=False,
+        )
+
+        print("=> Self supervised evaluation on task {}".format(eval_metric))
+        print("k: {}, n: {}".format(aug_k, aug_n))
+
+        trainer = Trainer(devices=[args.gpu[0]])
+
+        best_model_path = "{}/model_{}_best_{}.ckpt".format(args.save_name, eval_metric, str(fold))
+        models[eval_metric].load_weights(best_model_path)
+        result = trainer.test(models[eval_metric], dataloaders=test_loader)
+        eval_result = result[0]["Test Norm Loss"]
+
+        best_inpainting = "{}/model_{}_best_{}.ckpt".format(args.save_name, "inpainting", str(fold))
+        models["inpainting"].load_weights(best_inpainting)
+        result_inpainting = trainer.test(models['inpainting'], dataloaders=test_loader)
+        eval_inpainting = result_inpainting[0]['Test Norm Loss']
+
+        print("Self supervised loss: ", eval_result)
+        print('Self supervised acc: ', result[0]['Test Acc'])
+        print('Info loss: ', eval_inpainting)
+
+        return eval_result - eval_inpainting
